@@ -1,0 +1,243 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #1b2430;
+  background: #f5f7fb;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 64px;
+  padding: 0 32px;
+  color: #ffffff;
+  background: #1f2a44;
+  box-shadow: 0 6px 18px rgba(22, 34, 58, 0.15);
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-links a {
+  border-radius: 6px;
+  padding: 9px 14px;
+  color: #d8e2f1;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.page-container {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.graph-page {
+  display: grid;
+  grid-template-rows: minmax(560px, 68vh) auto;
+  gap: 18px;
+}
+
+.graph-area {
+  overflow: hidden;
+  min-height: 560px;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(31, 42, 68, 0.08);
+}
+
+.react-flow__node-default.graph-node {
+  width: 118px;
+  border: 1px solid #8aa0be;
+  border-radius: 8px;
+  padding: 11px 10px;
+  color: #1f2a44;
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.react-flow__node-default.graph-node.highlighted {
+  border-color: #1d8a75;
+  box-shadow: 0 10px 24px rgba(29, 138, 117, 0.24);
+  transform: scale(1.04);
+}
+
+.react-flow__node-default.graph-node.faded {
+  opacity: 0.22;
+}
+
+.react-flow__edge.graph-edge .react-flow__edge-path {
+  stroke: #8797ad;
+  stroke-width: 1.6;
+  transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.react-flow__edge.graph-edge.highlighted .react-flow__edge-path {
+  stroke: #1d8a75;
+  stroke-width: 3;
+}
+
+.react-flow__edge.graph-edge.faded {
+  opacity: 0.14;
+}
+
+.detail-panel {
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  padding: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(31, 42, 68, 0.06);
+}
+
+.detail-panel h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+
+.detail-panel dl {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.detail-panel dt {
+  margin-bottom: 5px;
+  color: #66758c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.detail-panel dd {
+  margin: 0;
+}
+
+.empty-detail p {
+  margin: 0;
+  color: #66758c;
+}
+
+.section-heading {
+  margin-bottom: 18px;
+}
+
+.section-heading h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #66758c;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(31, 42, 68, 0.06);
+}
+
+.user-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  border-bottom: 1px solid #e7edf6;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.user-table th {
+  color: #516078;
+  background: #f0f4fa;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.user-table tr {
+  transition: background 0.18s ease;
+}
+
+.user-table tbody tr:hover {
+  background: #eef6f4;
+}
+
+.user-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.state-message {
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  padding: 22px;
+  background: #ffffff;
+}
+
+.error-message {
+  color: #9d2525;
+  background: #fff3f3;
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .nav-links {
+    width: 100%;
+  }
+
+  .nav-links a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .page-container {
+    width: min(100% - 20px, 1200px);
+    padding: 18px 0;
+  }
+
+  .graph-page {
+    grid-template-rows: 520px auto;
+  }
+
+  .graph-area {
+    min-height: 520px;
+  }
+}
