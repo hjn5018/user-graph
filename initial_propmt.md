@@ -9,17 +9,33 @@ Create a web application that visualizes follow relationships between 20 users a
 Users should be displayed as nodes.
 Follow relationships should be displayed as edges.
 
-When hovering a node:
-- connected nodes and edges should be highlighted
-- unrelated nodes and edges should fade
+Initial graph state:
+- all users should be displayed as small dot nodes
+- all follow edges should be displayed subtly with low opacity
+- the graph should look simple and not visually crowded
 
-When clicking a node:
-- a detail panel should appear
+When clicking a node for the first time:
+- the clicked node should be selected
+- connected nodes and connected edges should be highlighted
+- unrelated nodes should fade
+- unrelated edges should be hidden
+- the clicked node and connected nodes should show compact name cards
+- name cards should display only the user name
+- the selected state should remain even when the mouse leaves the node
+
+When clicking the same selected node one more time:
+- the selected node card should expand
 - display user information:
   - name
   - bio
   - contact
   - email
+- connected nodes should still display only compact name cards
+
+When clicking an empty graph area:
+- reset the selected node
+- reset the expanded detail card
+- return to the initial graph state
 
 # Tech Stack
 
@@ -34,6 +50,7 @@ Frontend:
 
 Backend:
 - Spring Boot
+- Gradle
 - Spring Web
 - Spring Data JPA
 - Lombok
@@ -44,7 +61,6 @@ Backend:
 ## Backend
 
 Create:
-
 - User entity
 - Follow entity
 
@@ -79,28 +95,43 @@ Use:
   - repository
   - entity
   - dto
+  - config
 
 Add:
 - CORS configuration for React frontend
+- allow both `http://localhost:5173` and `http://127.0.0.1:5173`
+
+Use Gradle:
+- create `build.gradle`
+- create `settings.gradle`
+- include Gradle Wrapper files
+- backend should run with `./gradlew bootRun`
+- on Windows, backend should run with `.\gradlew.bat bootRun`
 
 ## Frontend
 
 Create:
 - graph visualization page
-- detail panel component
+- custom graph node component
 - user list page
 - navigation bar
 
 Use React Flow.
 
 Implement:
-- node hover highlight interaction
-- edge highlight interaction
-- node click interaction
+- initial subtle edge display
+- click-based node selection
+- selected edge highlight interaction
+- selected node and connected node highlight interaction
+- second-click detail card expansion
+- empty graph area click reset
 
 The graph should:
 - render all users
 - render all follow relationships
+- display nodes as dots by default
+- display compact name cards only for selected and connected nodes
+- display full user details only when the selected node is clicked again
 
 Use:
 - React hooks
@@ -119,13 +150,15 @@ Install and use:
 Create at least 2 pages:
 
 1. Graph Visualization Page
-- route: /
+- route: `/`
 - displays the React Flow relationship graph
-- includes hover highlight interaction
-- includes node click detail panel
+- displays all edges subtly in the initial state
+- supports click-based highlight interaction
+- supports second-click node detail expansion
+- resets selection when clicking an empty graph area
 
 2. User List Page
-- route: /users
+- route: `/users`
 - displays all users in a table format
 
 # User List Table Requirements
@@ -159,81 +192,98 @@ Use:
 
 Layout:
 
+```text
 -------------------------------------------------
 | Navigation Bar                                |
 -------------------------------------------------
+|                                               |
 |                 Graph Area                    |
 |                                               |
+|   dot nodes + subtle edges                    |
+|   selected node expands inside the graph      |
 |                                               |
-|-----------------------------------------------|
-| Detail Panel                                  |
 -------------------------------------------------
+```
 
-The detail panel should update when a node is clicked.
+The user detail card should appear on the selected graph node, not in a bottom panel.
 
 # Styling
 
 Use plain CSS only.
 
 Add:
-- hover animations
 - smooth transitions
+- compact node card style
+- expanded selected node card style
 - node highlight effect
+- selected edge highlight effect
 - faded opacity effect
 - responsive layout
+
+The graph should stay visually simple:
+- use small dot nodes by default
+- keep initial edges light and subtle
+- do not use a minimap unless explicitly requested
+- avoid oversized cards
 
 # Project Structure
 
 Create separate folders:
 
+```text
 /backend
 /frontend
+```
 
 Use clean folder organization.
 
 Recommended structure:
 
+```text
 frontend/src/
- ├── pages/
- │    ├── GraphPage.jsx
- │    └── UserListPage.jsx
- │
- ├── components/
- │    ├── GraphView.jsx
- │    ├── UserDetail.jsx
- │    ├── UserTable.jsx
- │    └── Navbar.jsx
- │
- ├── api/
- ├── styles/
- └── App.jsx
+├─ pages/
+│  ├─ GraphPage.jsx
+│  └─ UserListPage.jsx
+├─ components/
+│  ├─ GraphView.jsx
+│  ├─ ErrorBoundary.jsx
+│  ├─ UserTable.jsx
+│  └─ Navbar.jsx
+├─ api/
+│  └─ client.js
+├─ styles/
+│  └─ global.css
+├─ App.jsx
+└─ main.jsx
 
-backend/src/main/java/
- ├── controller/
- ├── service/
- ├── repository/
- ├── entity/
- ├── dto/
- └── config/
+backend/src/main/java/com/example/usergraph/
+├─ controller/
+├─ service/
+├─ repository/
+├─ entity/
+├─ dto/
+└─ config/
+```
 
 # Git Requirements
 
 Initialize git repository:
+- run `git init`
 
-- run git init
+Create `.gitignore`.
 
-Create .gitignore.
-
-The .gitignore must include:
+The `.gitignore` must include:
 
 Frontend:
 - node_modules/
 - dist/
 - .env
+- .npm-cache/
 
 Backend:
 - build/
 - target/
+- .gradle/
 - *.class
 - *.log
 
@@ -254,13 +304,14 @@ After each major step:
 Example commit sequence:
 - chore: initialize project structure
 - feat: implement spring boot backend
+- build: switch backend to gradle
 - feat: add dummy user data
 - feat: implement react flow graph
-- feat: implement hover interaction
-- feat: implement user detail panel
+- feat: implement click selection highlight
+- feat: show user details on second click
 - feat: add user list page
 - feat: add react router navigation
-- style: improve ui styling
+- style: simplify graph visualization
 - docs: add README
 
 Use clear conventional commit messages.
@@ -269,15 +320,17 @@ Use clear conventional commit messages.
 
 Connect remote repository:
 
+```text
 https://github.com/hjn5018/user-graph
+```
 
 Push all commits to:
 - main branch
 
 Commands should include:
-- git remote add origin
-- git branch -M main
-- git push -u origin main
+- `git remote add origin https://github.com/hjn5018/user-graph`
+- `git branch -M main`
+- `git push -u origin main`
 
 # Deliverables
 
@@ -285,11 +338,12 @@ Generate:
 1. complete backend code
 2. complete frontend code
 3. package installation commands
-4. run instructions
-5. folder structure
-6. sample API responses
-7. README.md
-8. .gitignore
+4. Gradle backend run instructions
+5. frontend run instructions
+6. folder structure
+7. sample API responses
+8. README.md
+9. .gitignore
 
 # Constraints
 
@@ -297,7 +351,7 @@ Generate:
 - Keep code readable
 - Avoid unnecessary abstraction
 - Avoid overengineering
-- Use comments for important logic
+- Use comments only for important logic
 
 # Response Language Requirements
 
@@ -338,11 +392,14 @@ After each completed step:
 
 The project is complete when:
 
-- Spring Boot server runs successfully
+- Spring Boot server runs successfully with Gradle
 - React frontend runs successfully
 - graph renders correctly
-- hover highlight works
-- click detail panel works
+- initial edges are displayed subtly
+- clicking a node highlights connected nodes and edges
+- selected state remains after mouse leave
+- second-click expands the selected node detail card
+- clicking an empty graph area resets selection
 - user table page works
 - routing works correctly
 - navigation works correctly
