@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getFollows, getUsers } from '../api/client.js';
 import GraphView from '../components/GraphView.jsx';
 import UserDetail from '../components/UserDetail.jsx';

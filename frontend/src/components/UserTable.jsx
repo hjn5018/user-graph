@@ -1,3 +1,5 @@
+import React from 'react';
+
 function UserTable({ users }) {
   return (
     <div className="table-wrap">

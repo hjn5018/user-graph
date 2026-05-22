@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getUsers } from '../api/client.js';
 import UserTable from '../components/UserTable.jsx';
 

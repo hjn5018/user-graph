@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls, MiniMap } from 'reactflow';
 
 function GraphView({ users, follows, onSelectUser }) {
