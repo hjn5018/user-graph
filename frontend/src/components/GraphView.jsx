@@ -1,13 +1,29 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls, Handle, Position } from 'reactflow';
 
 function UserGraphNode({ data }) {
   if (data.showName) {
     return (
-      <div className="node-card">
+      <div className={data.showDetails ? 'node-card expanded' : 'node-card'}>
         <Handle type="target" position={Position.Top} />
         <Handle type="source" position={Position.Bottom} />
         <strong>{data.user.name}</strong>
+        {data.showDetails && (
+          <dl>
+            <div>
+              <dt>소개</dt>
+              <dd>{data.user.bio}</dd>
+            </div>
+            <div>
+              <dt>연락처</dt>
+              <dd>{data.user.contact}</dd>
+            </div>
+            <div>
+              <dt>이메일</dt>
+              <dd>{data.user.email}</dd>
+            </div>
+          </dl>
+        )}
       </div>
     );
   }
@@ -25,6 +41,7 @@ const nodeTypes = {
 };
 
 function GraphView({ users, follows, selectedUser, onSelectUser }) {
+  const [expandedNodeId, setExpandedNodeId] = useState(null);
   const selectedNodeId = selectedUser ? String(selectedUser.id) : null;
 
   const connectedNodeIds = useMemo(() => {
@@ -66,6 +83,7 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         data: {
           user,
           showName: Boolean(isHighlighted),
+          showDetails: isSelected && expandedNodeId === String(user.id),
         },
         position: {
           x: centerX + radius * Math.cos(angle),
@@ -80,7 +98,7 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         ].join(' '),
       };
     });
-  }, [connectedNodeIds, selectedNodeId, selectedUser, users]);
+  }, [connectedNodeIds, expandedNodeId, selectedNodeId, selectedUser, users]);
 
   const edges = useMemo(() => {
     return follows.map((follow) => {
@@ -107,13 +125,17 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
     (event, node) => {
       event.stopPropagation();
       const user = users.find((item) => String(item.id) === node.id);
+      const isAlreadySelected = selectedNodeId === node.id;
+
       onSelectUser(user);
+      setExpandedNodeId(isAlreadySelected ? node.id : null);
     },
-    [onSelectUser, users]
+    [onSelectUser, selectedNodeId, users]
   );
 
   const handlePaneClick = useCallback(() => {
     onSelectUser(null);
+    setExpandedNodeId(null);
   }, [onSelectUser]);
 
   return (
