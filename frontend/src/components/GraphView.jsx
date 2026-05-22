@@ -96,7 +96,8 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         className: [
           'graph-edge',
           isConnected ? 'highlighted' : '',
-          !isConnected ? 'hidden' : '',
+          !selectedNodeId ? 'subtle' : '',
+          selectedNodeId && !isConnected ? 'hidden' : '',
         ].join(' '),
       };
     });

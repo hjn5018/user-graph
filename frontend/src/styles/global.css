@@ -160,6 +160,15 @@ a {
   pointer-events: none;
 }
 
+.react-flow__edge.graph-edge.subtle {
+  opacity: 0.18;
+}
+
+.react-flow__edge.graph-edge.subtle .react-flow__edge-path {
+  stroke: #9eabbd;
+  stroke-width: 1.2;
+}
+
 .react-flow__edge.graph-edge.highlighted .react-flow__edge-path {
   stroke: #1d8a75;
   stroke-width: 2.4;
