@@ -112,6 +112,11 @@ a {
   transform: scale(1.04);
 }
 
+.react-flow__node-default.graph-node.dot-node.highlighted {
+  background: #1d8a75;
+  transform: scale(1.25);
+}
+
 .react-flow__node-default.graph-node.faded {
   opacity: 0.22;
 }

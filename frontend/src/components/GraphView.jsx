@@ -38,14 +38,14 @@ function GraphView({ users, follows, onSelectUser }) {
 
       return {
         id: String(user.id),
-        data: { label: isHighlighted ? user.name : '' },
+        data: { label: '' },
         position: {
           x: centerX + radius * Math.cos(angle),
           y: centerY + radius * Math.sin(angle),
         },
         className: [
           'graph-node',
-          !isHighlighted ? 'dot-node' : '',
+          'dot-node',
           isHighlighted ? 'highlighted' : '',
           isFaded ? 'faded' : '',
         ].join(' '),
