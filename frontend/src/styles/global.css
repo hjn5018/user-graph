@@ -104,30 +104,34 @@ a {
 }
 
 .node-card {
-  display: grid;
-  gap: 6px;
-  width: 220px;
-  border: 1px solid #1d8a75;
-  border-radius: 8px;
-  padding: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  max-width: 150px;
+  border: 1px solid #9db0c9;
+  border-radius: 7px;
+  padding: 8px 10px;
   color: #1f2a44;
   background: #ffffff;
-  box-shadow: 0 16px 32px rgba(31, 42, 68, 0.18);
+  box-shadow: 0 10px 22px rgba(31, 42, 68, 0.13);
 }
 
 .node-card strong {
-  font-size: 16px;
-}
-
-.node-card span {
-  color: #526176;
+  overflow: hidden;
+  width: 100%;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.node-card small {
-  color: #66758c;
-  font-size: 12px;
+.react-flow__node.graph-node.selected .node-card {
+  border-color: #1d8a75;
+  color: #0f5d50;
+  box-shadow: 0 14px 28px rgba(29, 138, 117, 0.22);
+  transform: scale(1.04);
 }
 
 .react-flow__node.graph-node.faded {

@@ -1,14 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import ReactFlow, { Background, Controls } from 'reactflow';
 
 function UserGraphNode({ data }) {
-  if (data.isSelected) {
+  if (data.showName) {
     return (
       <div className="node-card">
         <strong>{data.user.name}</strong>
-        <span>{data.user.bio}</span>
-        <small>{data.user.contact}</small>
-        <small>{data.user.email}</small>
       </div>
     );
   }
@@ -21,29 +18,29 @@ const nodeTypes = {
 };
 
 function GraphView({ users, follows, selectedUser, onSelectUser }) {
-  const [hoveredNodeId, setHoveredNodeId] = useState(null);
+  const selectedNodeId = selectedUser ? String(selectedUser.id) : null;
 
   const connectedNodeIds = useMemo(() => {
-    if (!hoveredNodeId) {
+    if (!selectedNodeId) {
       return new Set();
     }
 
-    const ids = new Set([hoveredNodeId]);
+    const ids = new Set([selectedNodeId]);
     follows.forEach((follow) => {
       const source = String(follow.followerId);
       const target = String(follow.followingId);
 
-      if (source === hoveredNodeId) {
+      if (source === selectedNodeId) {
         ids.add(target);
       }
 
-      if (target === hoveredNodeId) {
+      if (target === selectedNodeId) {
         ids.add(source);
       }
     });
 
     return ids;
-  }, [follows, hoveredNodeId]);
+  }, [follows, selectedNodeId]);
 
   const nodes = useMemo(() => {
     const centerX = 420;
@@ -52,8 +49,8 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
 
     return users.map((user, index) => {
       const angle = (2 * Math.PI * index) / users.length;
-      const isFaded = hoveredNodeId && !connectedNodeIds.has(String(user.id));
-      const isHighlighted = hoveredNodeId && connectedNodeIds.has(String(user.id));
+      const isFaded = selectedNodeId && !connectedNodeIds.has(String(user.id));
+      const isHighlighted = selectedNodeId && connectedNodeIds.has(String(user.id));
       const isSelected = selectedUser?.id === user.id;
 
       return {
@@ -61,7 +58,7 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         type: 'userNode',
         data: {
           user,
-          isSelected,
+          showName: Boolean(isHighlighted),
         },
         position: {
           x: centerX + radius * Math.cos(angle),
@@ -69,20 +66,20 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         },
         className: [
           'graph-node',
-          isSelected ? 'selected' : 'dot-node',
+          isHighlighted ? 'name-node' : 'dot-node',
+          isSelected ? 'selected' : '',
           isHighlighted ? 'highlighted' : '',
           isFaded ? 'faded' : '',
         ].join(' '),
       };
     });
-  }, [connectedNodeIds, hoveredNodeId, selectedUser, users]);
+  }, [connectedNodeIds, selectedNodeId, selectedUser, users]);
 
   const edges = useMemo(() => {
     return follows.map((follow) => {
       const source = String(follow.followerId);
       const target = String(follow.followingId);
-      const isConnected = hoveredNodeId && (source === hoveredNodeId || target === hoveredNodeId);
-      const isFaded = hoveredNodeId && !isConnected;
+      const isConnected = selectedNodeId && (source === selectedNodeId || target === selectedNodeId);
 
       return {
         id: `e-${follow.id}`,
@@ -92,28 +89,24 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         className: [
           'graph-edge',
           isConnected ? 'highlighted' : '',
-          !hoveredNodeId ? 'hidden' : '',
-          isFaded ? 'hidden' : '',
+          !isConnected ? 'hidden' : '',
         ].join(' '),
       };
     });
-  }, [follows, hoveredNodeId]);
+  }, [follows, selectedNodeId]);
 
   const handleNodeClick = useCallback(
     (event, node) => {
+      event.stopPropagation();
       const user = users.find((item) => String(item.id) === node.id);
       onSelectUser(user);
     },
     [onSelectUser, users]
   );
 
-  const handleNodeMouseEnter = useCallback((event, node) => {
-    setHoveredNodeId(node.id);
-  }, []);
-
-  const handleNodeMouseLeave = useCallback(() => {
-    setHoveredNodeId(null);
-  }, []);
+  const handlePaneClick = useCallback(() => {
+    onSelectUser(null);
+  }, [onSelectUser]);
 
   return (
     <div className="graph-area">
@@ -121,8 +114,7 @@ function GraphView({ users, follows, selectedUser, onSelectUser }) {
         nodes={nodes}
         edges={edges}
         onNodeClick={handleNodeClick}
-        onNodeMouseEnter={handleNodeMouseEnter}
-        onNodeMouseLeave={handleNodeMouseLeave}
+        onPaneClick={handlePaneClick}
         nodeTypes={nodeTypes}
         fitView
       >
