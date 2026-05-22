@@ -207,6 +207,20 @@ a {
   background: #ffffff;
 }
 
+.state-message h1 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.state-message pre {
+  overflow-x: auto;
+  margin: 14px 0 0;
+  border-radius: 6px;
+  padding: 12px;
+  background: rgba(157, 37, 37, 0.08);
+  white-space: pre-wrap;
+}
+
 .error-message {
   color: #9d2525;
   background: #fff3f3;
