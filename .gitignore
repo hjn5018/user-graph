@@ -5,6 +5,7 @@ dist/
 
 build/
 target/
+.gradle/
 *.class
 *.log
 

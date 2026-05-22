@@ -34,10 +34,17 @@ user-graph/
 
 ```bash
 cd backend
-mvn spring-boot:run
+./gradlew bootRun
 ```
 
 백엔드는 `http://localhost:8080`에서 실행됩니다.
+
+Windows PowerShell에서는 아래 명령을 사용할 수 있습니다.
+
+```powershell
+cd backend
+.\gradlew.bat bootRun
+```
 
 H2 콘솔은 `http://localhost:8080/h2-console`에서 확인할 수 있습니다.
 
