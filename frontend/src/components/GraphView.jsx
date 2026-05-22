@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import ReactFlow, { Background, Controls, MiniMap } from 'reactflow';
+import ReactFlow, { Background, Controls } from 'reactflow';
 
 function GraphView({ users, follows, onSelectUser }) {
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
@@ -68,7 +68,8 @@ function GraphView({ users, follows, onSelectUser }) {
         className: [
           'graph-edge',
           isConnected ? 'highlighted' : '',
-          isFaded ? 'faded' : '',
+          !hoveredNodeId ? 'hidden' : '',
+          isFaded ? 'hidden' : '',
         ].join(' '),
       };
     });
@@ -101,7 +102,6 @@ function GraphView({ users, follows, onSelectUser }) {
         fitView
       >
         <Background color="#d7dde8" gap={20} />
-        <MiniMap pannable zoomable />
         <Controls />
       </ReactFlow>
     </div>
