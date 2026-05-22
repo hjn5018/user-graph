@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getFollows, getUsers } from '../api/client.js';
 import GraphView from '../components/GraphView.jsx';
-import UserDetail from '../components/UserDetail.jsx';
 
 function GraphPage() {
   const [users, setUsers] = useState([]);
@@ -36,8 +35,12 @@ function GraphPage() {
 
   return (
     <section className="graph-page">
-      <GraphView users={users} follows={follows} onSelectUser={setSelectedUser} />
-      <UserDetail user={selectedUser} />
+      <GraphView
+        users={users}
+        follows={follows}
+        selectedUser={selectedUser}
+        onSelectUser={setSelectedUser}
+      />
     </section>
   );
 }

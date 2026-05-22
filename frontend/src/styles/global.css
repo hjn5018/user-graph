@@ -60,13 +60,12 @@ a {
 }
 
 .graph-page {
-  display: grid;
-  grid-template-rows: minmax(560px, 68vh) auto;
-  gap: 18px;
+  min-height: calc(100vh - 120px);
 }
 
 .graph-area {
   overflow: hidden;
+  height: min(720px, calc(100vh - 120px));
   min-height: 560px;
   border: 1px solid #dce3ef;
   border-radius: 8px;
@@ -74,50 +73,64 @@ a {
   box-shadow: 0 12px 28px rgba(31, 42, 68, 0.08);
 }
 
-.react-flow__node-default.graph-node {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 118px;
-  min-height: 42px;
-  border: 1px solid #8aa0be;
-  border-radius: 8px;
-  padding: 11px 10px;
-  color: #1f2a44;
-  background: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
-  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+.react-flow__node.graph-node {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.react-flow__node-default.graph-node.dot-node {
+.node-dot {
   width: 14px;
   height: 14px;
-  min-height: 14px;
+  border: 1px solid #8aa0be;
   border-radius: 50%;
-  padding: 0;
   background: #34445f;
   box-shadow: 0 3px 8px rgba(31, 42, 68, 0.16);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.react-flow__node-default.graph-node.dot-node:hover {
+.react-flow__node.graph-node.dot-node:hover .node-dot {
   border-color: #1d8a75;
   background: #1d8a75;
   transform: scale(1.2);
 }
 
-.react-flow__node-default.graph-node.highlighted {
+.react-flow__node.graph-node.highlighted .node-dot {
   border-color: #1d8a75;
-  box-shadow: 0 10px 24px rgba(29, 138, 117, 0.24);
-  transform: scale(1.04);
-}
-
-.react-flow__node-default.graph-node.dot-node.highlighted {
   background: #1d8a75;
+  box-shadow: 0 10px 24px rgba(29, 138, 117, 0.24);
   transform: scale(1.25);
 }
 
-.react-flow__node-default.graph-node.faded {
+.node-card {
+  display: grid;
+  gap: 6px;
+  width: 220px;
+  border: 1px solid #1d8a75;
+  border-radius: 8px;
+  padding: 14px;
+  color: #1f2a44;
+  background: #ffffff;
+  box-shadow: 0 16px 32px rgba(31, 42, 68, 0.18);
+}
+
+.node-card strong {
+  font-size: 16px;
+}
+
+.node-card span {
+  color: #526176;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.node-card small {
+  color: #66758c;
+  font-size: 12px;
+}
+
+.react-flow__node.graph-node.faded {
   opacity: 0.22;
 }
 
@@ -278,10 +291,11 @@ a {
   }
 
   .graph-page {
-    grid-template-rows: 520px auto;
+    min-height: 520px;
   }
 
   .graph-area {
+    height: 520px;
     min-height: 520px;
   }
 }

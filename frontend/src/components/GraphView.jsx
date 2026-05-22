@@ -1,7 +1,26 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls } from 'reactflow';
 
-function GraphView({ users, follows, onSelectUser }) {
+function UserGraphNode({ data }) {
+  if (data.isSelected) {
+    return (
+      <div className="node-card">
+        <strong>{data.user.name}</strong>
+        <span>{data.user.bio}</span>
+        <small>{data.user.contact}</small>
+        <small>{data.user.email}</small>
+      </div>
+    );
+  }
+
+  return <div className="node-dot" aria-label={data.user.name} />;
+}
+
+const nodeTypes = {
+  userNode: UserGraphNode,
+};
+
+function GraphView({ users, follows, selectedUser, onSelectUser }) {
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
 
   const connectedNodeIds = useMemo(() => {
@@ -35,23 +54,28 @@ function GraphView({ users, follows, onSelectUser }) {
       const angle = (2 * Math.PI * index) / users.length;
       const isFaded = hoveredNodeId && !connectedNodeIds.has(String(user.id));
       const isHighlighted = hoveredNodeId && connectedNodeIds.has(String(user.id));
+      const isSelected = selectedUser?.id === user.id;
 
       return {
         id: String(user.id),
-        data: { label: '' },
+        type: 'userNode',
+        data: {
+          user,
+          isSelected,
+        },
         position: {
           x: centerX + radius * Math.cos(angle),
           y: centerY + radius * Math.sin(angle),
         },
         className: [
           'graph-node',
-          'dot-node',
+          isSelected ? 'selected' : 'dot-node',
           isHighlighted ? 'highlighted' : '',
           isFaded ? 'faded' : '',
         ].join(' '),
       };
     });
-  }, [connectedNodeIds, hoveredNodeId, users]);
+  }, [connectedNodeIds, hoveredNodeId, selectedUser, users]);
 
   const edges = useMemo(() => {
     return follows.map((follow) => {
@@ -99,6 +123,7 @@ function GraphView({ users, follows, onSelectUser }) {
         onNodeClick={handleNodeClick}
         onNodeMouseEnter={handleNodeMouseEnter}
         onNodeMouseLeave={handleNodeMouseLeave}
+        nodeTypes={nodeTypes}
         fitView
       >
         <Background color="#d7dde8" gap={20} />
