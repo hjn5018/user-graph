@@ -80,6 +80,17 @@ a {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+.graph-node .react-flow__handle {
+  width: 1px;
+  height: 1px;
+  min-width: 1px;
+  min-height: 1px;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .node-dot {
   width: 14px;
   height: 14px;

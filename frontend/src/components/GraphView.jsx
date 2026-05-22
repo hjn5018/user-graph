@@ -1,16 +1,23 @@
 import React, { useCallback, useMemo } from 'react';
-import ReactFlow, { Background, Controls } from 'reactflow';
+import ReactFlow, { Background, Controls, Handle, Position } from 'reactflow';
 
 function UserGraphNode({ data }) {
   if (data.showName) {
     return (
       <div className="node-card">
+        <Handle type="target" position={Position.Top} />
+        <Handle type="source" position={Position.Bottom} />
         <strong>{data.user.name}</strong>
       </div>
     );
   }
 
-  return <div className="node-dot" aria-label={data.user.name} />;
+  return (
+    <div className="node-dot" aria-label={data.user.name}>
+      <Handle type="target" position={Position.Top} />
+      <Handle type="source" position={Position.Bottom} />
+    </div>
+  );
 }
 
 const nodeTypes = {
