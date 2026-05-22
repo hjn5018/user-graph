@@ -75,7 +75,11 @@ a {
 }
 
 .react-flow__node-default.graph-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 118px;
+  min-height: 42px;
   border: 1px solid #8aa0be;
   border-radius: 8px;
   padding: 11px 10px;
@@ -84,6 +88,22 @@ a {
   font-size: 13px;
   font-weight: 700;
   transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.react-flow__node-default.graph-node.dot-node {
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  padding: 0;
+  background: #1f2a44;
+  box-shadow: 0 4px 12px rgba(31, 42, 68, 0.18);
+}
+
+.react-flow__node-default.graph-node.dot-node:hover {
+  border-color: #1d8a75;
+  background: #1d8a75;
+  transform: scale(1.2);
 }
 
 .react-flow__node-default.graph-node.highlighted {
